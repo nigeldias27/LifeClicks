@@ -3,23 +3,23 @@ import Patient from "../models/Patient.js";
 
 export const addPatient = async (req, res) => {
   try {
-    const patient = Patient.findById(req.body.patientID);
-    const doctor = Doctor.findById(req.body.doctorID);
+    const patient = await Patient.findById(req.body.patientID);
+    const doctor = await Doctor.findById(req.body.doctorID);
     if (doctor.Patients == undefined) {
-      await doctor.updateOne({ Patients: [req.body.doctorID] });
+      await doctor.updateOne({ Patients: [req.body.patientID] });
     } else {
       await doctor.updateOne({
-        Patients: [...doctor.Patients, req.body.doctorID],
+        Patients: [...doctor.Patients, req.body.patientID],
       });
     }
     if (patient.Doctors == undefined) {
       console.log(patient.Doctors);
-      var resp = await patient.updateOne({ Doctors: [req.body.patientID] });
+      var resp = await patient.updateOne({ Doctors: [req.body.doctorID] });
       console.log(resp.Doctors);
     } else {
       console.log(patient.Doctors);
       var resp = await patient.updateOne({
-        Doctors: [...patient.Doctors, req.body.patientID],
+        Doctors: [...patient.Doctors, req.body.doctorID],
       });
       console.log(resp.Doctors);
     }

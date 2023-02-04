@@ -8,11 +8,36 @@ import axios from "axios";
 export default function Home() {
   const router = useRouter();
   const [src, setSrc] = useState("");
+  const [doctorPatient, setdoctorPatient] = useState([]);
   const [open, setOpen] = useState(false);
+  const [done, setDone] = useState(false);
   const [userInfo, setuserInfo] = useState({});
   useEffect(() => {
     setuserInfo(JSON.parse(localStorage.getItem("userInfo")));
   }, []);
+  useEffect(() => {
+    initstate();
+  }, [userInfo]);
+  const initstate = async () => {
+    if (userInfo["_id"] != undefined) {
+      console.log(userInfo["_id"]);
+      if (userInfo.role == "Patient") {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}` + "LoadDoctor",
+          { id: userInfo["_id"] }
+        );
+        console.log(response.data);
+        setdoctorPatient(response.data);
+      } else if (userInfo.role == "Doctor") {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}` + "LoadPatient",
+          { id: userInfo["_id"] }
+        );
+        console.log(response.data);
+        setdoctorPatient(response.data);
+      }
+    }
+  };
   const handleClose = (value) => {
     setOpen(false);
   };
@@ -85,18 +110,22 @@ export default function Home() {
         <div>
           <h1 className="text-5xl font-small text-black ml-24">Your doctors</h1>
           <div className="overflow-x-auto flex flex-row px-24 py-12">
-            <div
-              style={{ width: "240px" }}
-              className="rounded-md drop-shadow-2xl mx-8 bg-purple-50 py-16  flex flex-col justify-center items-center"
-            >
-              <Avatar
-                sx={{ width: 120, height: 120 }}
-                src={userInfo.profileURL}
-              ></Avatar>
-              <span className="mt-8 text-xl font-small w-90 text-justify">
-                Dr.Rajeev Seth{" "}
-              </span>
-            </div>
+            {doctorPatient.map((v) => {
+              return (
+                <div
+                  style={{ width: "240px" }}
+                  className="rounded-md drop-shadow-2xl mx-8 bg-purple-50 py-16  flex flex-col justify-center items-center"
+                >
+                  <Avatar
+                    sx={{ width: 120, height: 120 }}
+                    src={v.profileURL}
+                  ></Avatar>
+                  <span className="mt-8 text-xl font-small w-90 text-justify">
+                    {v.Name}{" "}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div>
@@ -197,18 +226,22 @@ export default function Home() {
         <div>
           <h1 className="text-5xl font-small text-black ml-24">Your doctors</h1>
           <div className="overflow-x-auto flex flex-row px-24 py-12">
-            <div
-              style={{ width: "240px" }}
-              className="rounded-md drop-shadow-2xl mx-8 bg-purple-50 py-16  flex flex-col justify-center items-center"
-            >
-              <Avatar
-                sx={{ width: 120, height: 120 }}
-                src={userInfo.profileURL}
-              ></Avatar>
-              <span className="mt-8 text-xl font-small w-90 text-justify">
-                Dr.Rajeev Seth{" "}
-              </span>
-            </div>
+            {doctorPatient.map((v) => {
+              return (
+                <div
+                  style={{ width: "240px" }}
+                  className="rounded-md drop-shadow-2xl mx-8 bg-purple-50 py-16  flex flex-col justify-center items-center"
+                >
+                  <Avatar
+                    sx={{ width: 120, height: 120 }}
+                    src={v.profileURL}
+                  ></Avatar>
+                  <span className="mt-8 text-xl font-small w-90 text-justify">
+                    {v.Name}{" "}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div>
@@ -236,7 +269,7 @@ export default function Home() {
           <div className="w-screen flex flex-col">
             <DialogTitle>QR Code</DialogTitle>
             <QrReader
-              delay={100}
+              delay={50000}
               style={{
                 height: 240,
                 width: 320,
@@ -248,13 +281,14 @@ export default function Home() {
                 console.log("this is running");
                 console.log(data);
 
-                if (data != null) {
+                if (data != null && done == false) {
                   try {
+                    setDone(true);
                     const response = await axios.post(
                       `${process.env.NEXT_PUBLIC_API}` + "addPatient",
                       { doctorID: userInfo["_id"], patientID: data.text }
                     );
-                    router.push("/updateInfo");
+                    router.push("/updateInfo/" + data.text);
                   } catch (e) {
                     console.log(e);
                   }
