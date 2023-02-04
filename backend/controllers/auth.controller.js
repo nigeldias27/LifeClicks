@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/Patient";
 
 export const login = async (req, res) => {
   const user = await User.findOne({ Email: req.body.email });
@@ -16,6 +16,8 @@ export const signUp = async (req, res) => {
     const savingData = await data.save();
     res.status(200).json(savingData);
   } catch (e) {
-    res.status(400).send(error.message);
+    //res.status(400).send(error.message);
+    console.log(e);
+    console.log(e.msg);
   }
 };

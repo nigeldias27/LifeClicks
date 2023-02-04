@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 export default function Patient() {
   const router = useRouter();
   const [data, setData] = useState({});
-  const [medicalInfo, setMedicalInfo] = useState({});
+  const [medicalInfo, setMedicalInfo] = useState([]);
   const [medicalList, setMedicalList] = useState([]);
   const [profileURL, setProfileURL] = useState("");
   const [reports, setReports] = useState([]);
@@ -167,6 +167,31 @@ export default function Patient() {
             onChange={changed("Password")}
             className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
           ></input>
+        </div>
+      </Expandible>
+      <Expandible name="CaseHistory">
+        <div className="pt-4 grid grid-cols-3">
+          <div className="px-4">
+            <input
+              placeholder="Family Case History"
+              onChange={changed("FamilyCaseHistory")}
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
+          <div className="px-4">
+            <input
+              placeholder="Chronic Diseases"
+              onChange={changed("Chronic_diseases")}
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
+          <div className="px-4">
+            <input
+              placeholder="Allergies"
+              onChange={changed("Aleerigies")}
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
         </div>
       </Expandible>
       <Expandible name="Medical Visits">
