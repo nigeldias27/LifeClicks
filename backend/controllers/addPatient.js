@@ -12,6 +12,7 @@ export const addPatient = async (req, res) => {
         Patients: [...doctor.Patients, req.body.patientID],
       });
     }
+
     if (patient.Doctors == undefined) {
       console.log(patient.Doctors);
       var resp = await patient.updateOne({ Doctors: [req.body.doctorID] });

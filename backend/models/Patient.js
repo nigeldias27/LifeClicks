@@ -19,6 +19,19 @@ const dataSchema = new mongoose.Schema(
         ref: "Doctor",
       },
     ],
+    Prescription: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Prescription",
+      },
+    ],
+    Chronic_Disease: {
+      type: String,
+    },
+    Allergies: {
+      type: String,
+    },
+    FamilyCaseHistory: [],
     Email: {
       type: String,
     },

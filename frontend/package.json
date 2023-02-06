@@ -23,6 +23,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "react-qr-scanner": "^1.0.0-alpha.11",
+    "react-use-downloader": "^1.2.2",
     "typewriter-effect": "^2.19.0"
   },
   "devDependencies": {

@@ -1,3 +1,12 @@
+/*
+    Chronic_Disease: {
+      type: String,
+    },
+    Allergies: {
+      type: String,
+    },
+    FamilyCaseHistory: [],
+    */
 import { MdAdd } from "react-icons/md";
 import Expandible from "@/components/Expandible";
 
@@ -16,6 +25,8 @@ export default function Patient() {
   const [data, setData] = useState({});
   const [medicalInfo, setMedicalInfo] = useState({});
   const [medicalList, setMedicalList] = useState([]);
+  const [familyInfo, setFamilyInfo] = useState({});
+  const [familyList, setFamilyList] = useState([]);
   const [profileURL, setProfileURL] = useState("");
   const [reports, setReports] = useState([]);
   const changed = (props) => (e) => {
@@ -31,6 +42,12 @@ export default function Patient() {
     console.log(medicalInfo);
   };
 
+  const familyChanged = (props) => (e) => {
+    var d = {};
+    d[props] = e.target.value;
+    setFamilyInfo({ ...familyInfo, ...d });
+    console.log(familyInfo);
+  };
   const signUpClick = async () => {
     const newData = {
       ...data,
@@ -38,6 +55,7 @@ export default function Patient() {
       profileURL: profileURL,
       reports: reports,
       role: "Patient",
+      FamilyCaseHistory: familyList,
     };
     console.log(newData);
     const response = await axios.post(
@@ -168,6 +186,64 @@ export default function Patient() {
             className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
           ></input>
         </div>
+        <div className="px-4">
+          <input
+            placeholder="Chronic Diseases"
+            onChange={changed("Chronic_Disease")}
+            className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+          ></input>
+        </div>
+        <div className="px-4">
+          <input
+            placeholder="Allergies"
+            onChange={changed("Allergies")}
+            className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+          ></input>
+        </div>
+      </Expandible>
+      <Expandible name="Family History">
+        <div className="pt-4 grid grid-cols-3">
+          <div className="px-4">
+            <input
+              onChange={familyChanged("Title")}
+              placeholder="Title"
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
+          <div className="px-4">
+            <input
+              onChange={familyChanged("Relative")}
+              placeholder="How are you related to the person?"
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
+          <div className="px-4">
+            <input
+              placeholder="Date"
+              onChange={familyChanged("Date")}
+              type="date"
+              className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+            ></input>
+          </div>
+        </div>
+        <div className="px-4">
+          <textarea
+            placeholder="Description"
+            onChange={familyChanged("Description")}
+            className="w-full my-4 px-4 py-2 text-base border border-gray-300 rounded outline-none focus:ring-purple-500 focus:border-purple-500 focus:ring-1"
+          ></textarea>
+        </div>
+        <button
+          class="x-6 ml-4 drop-shadow-xl font-small rounded-md bg-gradient-to-r from-purple-400 to-purple-500 py-3 px-8 text-white"
+          type="submit"
+          onClick={() => {
+            console.log(familyInfo);
+            setFamilyList([...familyList, familyInfo]);
+            setFamilyInfo({});
+          }}
+        >
+          <span className="text-xl">Add</span>
+        </button>
       </Expandible>
       <Expandible name="Medical Visits">
         <div className="pt-4 grid grid-cols-3">

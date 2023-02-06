@@ -2,6 +2,7 @@ import Expandible from "@/components/Expandible";
 import Patient from "@/components/PatientRegistertion";
 import Doctor from "@/components/DoctorRegistration";
 import { useState } from "react";
+import Pharmacist from "@/components/pharamacistRegistration";
 
 export default function SignUp() {
   const [role, setRole] = useState("Patient");
@@ -47,6 +48,8 @@ export default function SignUp() {
           <Patient />
         ) : role == "Doctor" ? (
           <Doctor />
+        ) : role == "Pharmacist" ? (
+          <Pharmacist />
         ) : (
           <div></div>
         )}

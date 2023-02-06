@@ -18,8 +18,8 @@ export const login = async (req, res) => {
       }
     }
     if (pharma != null) {
-      if (patient.Password == req.body.password) {
-        res.json(doctor);
+      if (pharma.Password == req.body.password) {
+        res.json(pharma);
       }
     } else {
       res.send("Invalid credentials");
